@@ -1,0 +1,1 @@
+from .imagenet_1k_wds import ImageNet1KWDSDataModule

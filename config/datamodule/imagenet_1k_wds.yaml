@@ -1,0 +1,28 @@
+_target_: imagenet_on_tsubame.dataset.ImageNet1KWDSDataModule
+cfg:
+  path: /gs/bs/tga-lab_otm/datasets/imagenet-1k-wds
+  batch_size: ${trainer.batch_size}
+  num_workers: 1
+  train:
+    transform:
+      _target_: torchvision.transforms.Compose
+      transforms:
+        - _target_: torchvision.transforms.ToTensor
+        - _target_: torchvision.transforms.RandomResizedCrop
+          _args_: [224]
+        - _target_: torchvision.transforms.RandomHorizontalFlip
+        - _target_: torchvision.transforms.Normalize
+          mean: [0.485, 0.456, 0.406]
+          std: [0.229, 0.224, 0.225]
+  valid:
+    transform:
+      _target_: torchvision.transforms.Compose
+      transforms:
+        - _target_: torchvision.transforms.ToTensor
+        - _target_: torchvision.transforms.Resize
+          _args_: [256] 
+        - _target_: torchvision.transforms.CenterCrop
+          _args_: [224]
+        - _target_: torchvision.transforms.Normalize
+          mean: [0.485, 0.456, 0.406]
+          std: [0.229, 0.224, 0.225]

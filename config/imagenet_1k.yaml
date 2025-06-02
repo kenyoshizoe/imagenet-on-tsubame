@@ -1,0 +1,44 @@
+defaults:
+  - datamodule: imagenet_1k_wds
+  - backbone: torchvision_r50
+  - head: imagenet_1k
+  - _self_
+
+project_name: imagenet_1k
+run_name: default
+mode: train
+ckpt_path:
+seed: 42
+
+model:
+  _target_: imagenet_on_tsubame.net.Net
+  config:
+    trainer: ${trainer}
+    optimizer:
+      _target_: torch.optim.SGD
+      lr: 0.1
+      momentum: 0.9
+      weight_decay: 0.0001
+    lr_scheduler:
+      _target_: torch.optim.lr_scheduler.StepLR
+      step_size: 30
+      gamma: 0.1
+    backbone: ${backbone}
+    heads:
+      - ${head}
+
+trainer:
+  logger: [csv]
+  callbacks:
+    - _target_: lightning.pytorch.callbacks.ModelCheckpoint
+      monitor: valid/loss
+      filename: best-checkpoint-{epoch:02d}
+      save_top_k: 1
+      mode: min
+      save_last: True
+  batch_size: 64
+  max_epochs: 90
+  min_epochs: 90
+  max_steps: -1
+  min_steps: -1
+  use_distributed_sampler: False

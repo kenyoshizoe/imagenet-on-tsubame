@@ -1,0 +1,6 @@
+model:
+  _target_: imagenet_on_tsubame.backbone.resnet.build_model
+  arch: resnet18
+  weights: IMAGENET1K_V1
+
+feature_size: 512
