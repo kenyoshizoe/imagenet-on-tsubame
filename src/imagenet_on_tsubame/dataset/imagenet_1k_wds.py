@@ -19,10 +19,8 @@ class ImageNet1KWDSDataModule(LightningDataModule):
     def __init__(self, cfg):
         super().__init__()
         self.cfg = cfg
-        # self._train_filenames = [f"imagenet1k-train-{sid:04d}.tar" for sid in range(1024)]
-        # self._val_filenames = [f"imagenet1k-validation-{sid:02d}.tar" for sid in range(64)]
-        self._train_filenames = [f"imagenet1k-train-{sid:04d}.tar" for sid in range(2)]
-        self._val_filenames = [f"imagenet1k-validation-{sid:02d}.tar" for sid in range(2)]
+        self._train_filenames = [f"imagenet1k-train-{sid:04d}.tar" for sid in range(1024)]
+        self._val_filenames = [f"imagenet1k-validation-{sid:02d}.tar" for sid in range(64)]
 
     def setup(self, stage=None):
         train_shards = []
