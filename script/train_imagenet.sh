@@ -5,7 +5,7 @@
 #$ -o log_train_imagenet.txt
 #$ -j y
 
-cd /gs/bs/tga-lab_otm/htanimura/imagenet-on-tsubame
+cd /gs/bs/tga-xxx/yyy/imagenet-on-tsubame
 ~/.local/bin/uv run python main.py --config-name imagenet_1k \
     run_name=default \
     trainer.logger=[wandb] \
