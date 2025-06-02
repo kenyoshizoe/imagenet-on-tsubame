@@ -43,8 +43,6 @@ class Net(LightningModule):
 
     def on_train_epoch_end(self):
         for head in self.config.heads:
-            if 'type' in head and head.type == 'face_recognition':
-                continue
             for metric in head.metrics:
                 m = getattr(self, f'{head.name}_{metric.name}_train')
                 v = m.compute()
