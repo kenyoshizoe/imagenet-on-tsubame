@@ -27,7 +27,7 @@ class ImageNet1KWDSDataModule(LightningDataModule):
         for f in self._train_filenames:
             train_shards.append(f"file:{self.cfg.path}/{f}")
         self.train_dataset = (
-            RepeatedWebDataset(train_shards, shardshuffle=True, nodesplitter=wds.split_by_node, empty_check=False)
+            wds.WebDataset(train_shards, shardshuffle=True, nodesplitter=wds.split_by_node, empty_check=False)
             .shuffle(1000)
             .decode("pil")
             .map_dict(jpg=instantiate(self.cfg.train.transform))
@@ -38,7 +38,7 @@ class ImageNet1KWDSDataModule(LightningDataModule):
         for f in self._val_filenames:
             valid_shards.append(f"file:{self.cfg.path}/{f}")
         self.valid_dataset = (
-            RepeatedWebDataset(valid_shards, shardshuffle=True, nodesplitter=wds.split_by_node, empty_check=False)
+            wds.WebDataset(valid_shards, shardshuffle=True, nodesplitter=wds.split_by_node, empty_check=False)
             .decode("pil")
             .map_dict(jpg=instantiate(self.cfg.valid.transform))
             .to_tuple("jpg", "json")
