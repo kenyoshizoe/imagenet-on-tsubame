@@ -35,10 +35,10 @@ class Net(LightningModule):
     def training_step(self, batch, batch_idx):
         total_loss, losses, metrics = self._get_preds_loss_acc(batch, mode='train')
         for key, value in losses.items():
-            self.log(f'train/{key}', value, batch_size=batch[0].size(0))
-        self.log('train/loss', total_loss, batch_size=batch[0].size(0))
+            self.log(f'train/{key}', value, batch_size=batch[0].size(0), sync_dist=True)
+        self.log('train/loss', total_loss, batch_size=batch[0].size(0), sync_dist=True)
         lr = self.trainer.optimizers[0].param_groups[0]['lr']
-        self.log('train/lr', lr, batch_size=batch[0].size(0))
+        self.log('train/lr', lr, batch_size=batch[0].size(0), sync_dist=True)
         return total_loss
 
     def on_train_epoch_end(self):
@@ -61,8 +61,8 @@ class Net(LightningModule):
     def validation_step(self, batch, batch_idx):
         total_loss, losses, metrics = self._get_preds_loss_acc(batch, mode='valid')
         for key, value in losses.items():
-            self.log(f'valid/{key}', value, batch_size=batch[0].size(0))
-        self.log('valid/loss', total_loss, batch_size=batch[0].size(0))
+            self.log(f'valid/{key}', value, batch_size=batch[0].size(0), sync_dist=True)
+        self.log('valid/loss', total_loss, batch_size=batch[0].size(0), sync_dist=True)
 
     def on_validation_epoch_end(self):
         for head in self.config.heads:
@@ -84,8 +84,8 @@ class Net(LightningModule):
     def test_step(self, batch, batch_idx):
         total_loss, losses, metrics = self._get_preds_loss_acc(batch, mode='test')
         for key, value in losses.items():
-            self.log(f'test/{key}', value, batch_size=batch[0].size(0))
-        self.log('test/loss', total_loss, batch_size=batch[0].size(0))
+            self.log(f'test/{key}', value, batch_size=batch[0].size(0), sync_dist=True)
+        self.log('test/loss', total_loss, batch_size=batch[0].size(0), sync_dist=True)
 
     def on_test_epoch_end(self):
         for head in self.config.heads:
